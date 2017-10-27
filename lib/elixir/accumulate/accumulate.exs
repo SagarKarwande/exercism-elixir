@@ -14,17 +14,9 @@ defmodule Accumulate do
       [2, 4, 6]
 
   """
-
+  def accumulate([],_), do: []
   @spec accumulate(list, (any -> any)) :: list
-  def accumulate(list, fun) do
-    map(list, fun)
+  def accumulate([head | tail], fun) do
+    [fun.(head) | accumulate(tail, fun)]
   end
-
-  def map(list, func), do: map(list, func, [])
-  defp map([],_,result), do: result |> reverse
-  defp map([h | tail], func, result), do: map(tail, func, [func.(h) | result])
-
-  def reverse(list), do: reverse(list, [])
-  defp reverse([h | tail],result), do: reverse(tail, [h | result])
-  defp reverse([],result), do: result
 end
