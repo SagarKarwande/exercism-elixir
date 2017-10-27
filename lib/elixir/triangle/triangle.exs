@@ -6,19 +6,17 @@ defmodule Triangle do
   """
   @spec kind(number, number, number) :: { :ok, kind } | { :error, String.t }
   def kind(a, b, c) do
-    triangle_type(a, b, c)
+    Enum.sort([a, b, c])
+    |> kind
   end
 
-  def triangle_type(a, b, c) when a <= 0 or b <= 0 or c <= 0, do: {:error, "all side lengths must be positive"}
-  def triangle_type(a, b, c) when a + b <= c, do: { :error, "side lengths violate triangle inequality" }
-  def triangle_type(a, b, c) when a + c <= b, do: { :error, "side lengths violate triangle inequality" }
-  def triangle_type(a, b, c) when b + c <= a, do: { :error, "side lengths violate triangle inequality" }
+  def kind([a, _, _]) when a <= 0 , do: {:error, "all side lengths must be positive"}
+  def kind([a, b, c]) when a + b <= c, do: { :error, "side lengths violate triangle inequality" }
 
-  def triangle_type(a, a, a), do: { :ok, :equilateral }
+  def kind([a, a, a]), do: { :ok, :equilateral }
 
-  def triangle_type(a, _, a), do: { :ok, :isosceles }
-  def triangle_type(a, a, _), do: { :ok, :isosceles }
-  def triangle_type(_, a, a), do: { :ok, :isosceles }
+  def kind([a, a, _]), do: { :ok, :isosceles }
+  def kind([_, a, a]), do: { :ok, :isosceles }
 
-  def triangle_type(a, b, c), do: { :ok, :scalene }
+  def kind([a, b, c]), do: { :ok, :scalene }
 end
